@@ -1,5 +1,7 @@
 package brad.tw.mystopwatch;
 
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private int counter;    // 0
     private MyTask myTask;
     private TextView mytimer;
+    private UIHandler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         timer = new Timer();
+        handler = new UIHandler();
 
         btnLeft = (Button)findViewById(R.id.btnLeft);
         btnRight = (Button)findViewById(R.id.btnRight);
@@ -66,8 +70,16 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             counter++;
+            handler.sendEmptyMessage(0);
         }
     }
 
+    private class UIHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mytimer.setText("" + counter);
+        }
+    }
 
 }
