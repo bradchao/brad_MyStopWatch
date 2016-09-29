@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void doLap(){
         HashMap<String,String> lap = new HashMap<>();
-        lap.put(from[0], "" + counter);
+        lap.put(from[0], toTimeString());
         data.add(0, lap);
         adapter.notifyDataSetChanged();
     }
@@ -116,8 +116,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mytimer.setText("" + counter);
+            mytimer.setText(toTimeString());
         }
+    }
+
+    private String toTimeString(){
+        int ms = counter % 100;
+        int ts = (counter - ms) / 100;
+        int ss = ts % 60;
+        return ss + "." + ms;
     }
 
 }
