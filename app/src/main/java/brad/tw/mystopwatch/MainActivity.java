@@ -45,8 +45,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void doLeft(View v){
+        if (isRunning){
+            doLap();
+        }else{
+            doReset();
+        }
+    }
+    private void doLap(){
 
     }
+    private void doReset(){
+        counter = 0;
+        handler.sendEmptyMessage(0);
+    }
+
     public void doRight(View v){
         isRunning = !isRunning;
 
