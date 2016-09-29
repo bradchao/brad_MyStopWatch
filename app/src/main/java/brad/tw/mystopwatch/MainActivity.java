@@ -6,8 +6,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -19,6 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private MyTask myTask;
     private TextView mytimer;
     private UIHandler handler;
+
+    private ListView lapList;
+    private SimpleAdapter adapter;
+    private String[] from = {"laptime"};
+    private int[] to = {R.id.item_laptime};
+    private LinkedList<HashMap<String,String>> data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +42,18 @@ public class MainActivity extends AppCompatActivity {
         btnRight = (Button)findViewById(R.id.btnRight);
         mytimer = (TextView)findViewById(R.id.mytimer);
 
+        lapList = (ListView)findViewById(R.id.lapList);
+        initListView();
+
         isRunning = false;
         counter = 0;
+    }
+
+    private void initListView(){
+        data = new LinkedList<>();
+        adapter = new SimpleAdapter(this,data,R.layout.layout_item,
+                from,to);
+        lapList.setAdapter(adapter);
     }
 
     @Override
@@ -52,11 +72,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void doLap(){
-
+        HashMap<String,String> lap = new HashMap<>();
+        lap.put(from[0], "" + counter);
+        data.add(0, lap);
+        adapter.notifyDataSetChanged();
     }
     private void doReset(){
         counter = 0;
         handler.sendEmptyMessage(0);
+
+        data.clear();
+        adapter.notifyDataSetChanged();
     }
 
     public void doRight(View v){
